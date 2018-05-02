@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="70dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+  >
+
+
+    <TextView
+        android:id="@+id/textViewDetailTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/postTitle"
+        android:textSize="22sp"
+
+        style="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/textViewDetailUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dummyName"
+        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        style="@style/TextAppearance.AppCompat.Medium"
+       />
+
+    <TextView
+        android:id="@+id/textViewDetailBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dummyBody"
+        android:paddingTop="10dp"
+        android:textSize="20sp"
+        style="@style/TextAppearance.AppCompat.Small"
+        />
+
+    <TextView
+        android:id="@+id/textViewDetailCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dummyCount"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:textStyle="italic"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:textSize="18sp" />
+
+</LinearLayout>

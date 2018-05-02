@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PostInfo</string>
+    <string name="dummyName">John Doe</string>
+    <string name="dummyBody">This app was made on 1 st may 2018</string>
+    <string name="dummyCount">5 comments</string>
+    <string name="postTitle">New  post</string>
+    <string name="title_activity_detail">DetailActivity</string>
+</resources>
