@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nuc.postinfo.R;
 import com.nuc.postinfo.model.Comment;
 import com.nuc.postinfo.model.User;
@@ -20,6 +19,9 @@ import com.nuc.postinfo.util.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -29,17 +31,31 @@ public class DetailActivity extends AppCompatActivity {
     ArrayList<Comment> dummyComments = new ArrayList<Comment>();
 
     protected int mPostId;
+
+    @BindView(R.id.textViewDetailTitle)
     TextView mtvTitle;
+
+    @BindView(R.id.textViewDetailUserName)
     TextView mtvUsername;
-    private TextView mtvmBody;
-    private TextView mCommentCount;
+
+    @BindView(R.id.textViewDetailBody)
+   TextView mtvmBody;
+
+    @BindView(R.id.textViewDetailCount)
+     TextView mCommentCount;
+
+    @BindView(R.id.imageViewItemDetail)
+    ImageView imageView;
+
     protected int mUserId;
-    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        ButterKnife.bind(this);
+
 
         //for back button
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -56,13 +72,6 @@ public class DetailActivity extends AppCompatActivity {
         Log.d(Utility.LOG_TAG, " ***************  RECEIVED THRU INTENT  =  post.id= " + mPostId + "  userid = " + mUserId);
         //"   email = "+ post.email+ "  comments.name= "+post.name);
 
-
-        mtvTitle = (TextView) findViewById(R.id.textViewDetailTitle);
-        mtvUsername = (TextView) findViewById(R.id.textViewDetailUserName);
-        mtvmBody = (TextView) findViewById(R.id.textViewDetailBody);
-        mCommentCount = (TextView) findViewById(R.id.textViewDetailCount);
-        imageView = (ImageView) findViewById(R.id.imageViewItemDetail);
-      
         queryApi = new QueryApi();
         mDetailPresenter = new DetailPresenter(this, queryApi);
         mDetailPresenter.loadComments();
@@ -126,8 +135,6 @@ public class DetailActivity extends AppCompatActivity {
                 .with(this)
                 .load(Utility.BASE_IMAGE_URL+emailId)
                  .thumbnail(0.5f)
-                 .crossFade()
-                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
     }
 }

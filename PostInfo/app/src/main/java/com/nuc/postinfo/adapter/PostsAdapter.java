@@ -7,10 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.nuc.postinfo.R;
 import com.nuc.postinfo.model.Post;
 import com.nuc.postinfo.util.Utility;
@@ -18,12 +16,16 @@ import com.nuc.postinfo.view.DetailActivity;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by mayurik on 01/05/2018.
  */
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
     private ArrayList<Post> values;
+    private PostsViewWrapper wrapperView;
 
     public PostsAdapter(ArrayList<Post> myDataset) {
 
@@ -34,17 +36,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView txtTitle;
-        public TextView txtBody;
-        // public ImageView imageView;
+
         public View layout;
 
         public ViewHolder(View v) {
             super(v);
             layout = v;
-            txtTitle = (TextView) v.findViewById(R.id.textViewItemPostTitle);
-            txtBody = (TextView) v.findViewById(R.id.textViewItemPostBody);
-            // imageView = (ImageView) v.findViewById(R.id.imageViewItemPost);
+            wrapperView = new PostsViewWrapper();
         }
     }
 
@@ -83,17 +81,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final Post post = values.get(position);
+
         if (post != null) {
-            Log.d(Utility.LOG_TAG, " POST = " + post.title + " position = " + position + " Email = " + post.email);
-            holder.txtTitle.setText(" Title: " + post.title);
-            holder.txtBody.setText(" Body: " + post.body);
-
-          /*  ImageView imageView = holder.imageVi ew;
-            if(imageView != null){
-                Log.d(Utility.LOG_TAG, " loadImageData for email " + post.email + "  pos = "+position);
-                loadImageData(holder.layout.getContext(), post.email, imageView);
-            }*/
-
+          //  wrapperView = new PostsViewWrapper();
+            ButterKnife.bind(wrapperView, holder.layout);
+            wrapperView.load(post);
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -104,25 +96,22 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         }
     }
 
-    private void loadImageData(Context context, String emailId, ImageView imageView) {
 
-        /*final ImageView myImageView;
-        if (recycled == null) {
-            myImageView = (ImageView) inflater.inflate(R.layout.my_image_view, container, false);
-        } else {
-            myImageView = (ImageView) recycled;
-        }*/
+    class PostsViewWrapper {
+        @BindView(R.id.textViewItemPostTitle)
+        TextView txtTitle;
 
-        //String url = myUrls.get(position);
+        @BindView(R.id.textViewItemPostBody)
+        TextView txtBody;
+        // public ImageView imageView;
 
-       /* Glide
-                .with(v.getc)
-                .load(url)
-                .centerCrop()
-                .placeholder(R.drawable.loading_spinner)
-                .into(myImageView);*/
 
-        Glide.with(context).load(Utility.BASE_IMAGE_URL + emailId).into(imageView);
+        public void load(Post post) {
+            Log.d(Utility.LOG_TAG, " POST = " + post.title + " Email = " + post.email);
+            txtTitle.setText(" Title: " + post.title);
+            txtBody.setText(" Body: " + post.body);
+        }
+
     }
 
     private void launchDetailActivity(Context context, Post post, int position) {
@@ -133,7 +122,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         intent.putExtra(Utility.POST_BODY, post.body);
         intent.putExtra(Utility.POST_ID, post.id);
         intent.putExtra(Utility.USER_ID, post.userId);
-
 
         context.startActivity(intent);
     }

@@ -6,10 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.nuc.postinfo.R;
 import com.nuc.postinfo.adapter.PostsAdapter;
 import com.nuc.postinfo.adapter.RVEmptyObserver;
@@ -20,27 +18,31 @@ import com.nuc.postinfo.services.QueryApi;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class PostsActivity extends AppCompatActivity {
 
-
+    @BindView(R.id.posts_recycler_view)
     RecyclerView mRecycleViewPosts;
+    @BindView(R.id.emptyView)
+    TextView emptyView;
+
     PostsAdapter mPostsAdapter;
     ListPresenter mListPresenter;
     LinearLayoutManager linearLayoutManager;
     QueryApi mQueryApi;
     ArrayList<Post> dummyPosts = new ArrayList<Post>();
-    private TextView emptyView;
-    private ImageView imageView;
-
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts_list);
+        unbinder = ButterKnife.bind(this);
 
         initializeRecyclerView();
-
-
 
         mQueryApi = new QueryApi();
         mListPresenter = new ListPresenter(PostsActivity.this, mQueryApi);
@@ -49,24 +51,16 @@ public class PostsActivity extends AppCompatActivity {
     }
 
     private void initializeRecyclerView() {
-        mRecycleViewPosts = (RecyclerView) findViewById(R.id.posts_recycler_view);
-        emptyView = (TextView) findViewById(R.id.emptyView);
+
         linearLayoutManager = new LinearLayoutManager(this);
         mRecycleViewPosts.setLayoutManager(linearLayoutManager);
-
-        //ArrayList<Post> dummyPosts= createDummyData();
         mPostsAdapter = new PostsAdapter(dummyPosts);
-
         mRecycleViewPosts.setAdapter(mPostsAdapter);
-
-
-
 
         //set emptyview
         mPostsAdapter.registerAdapterDataObserver(new RVEmptyObserver(mRecycleViewPosts, emptyView));
 
         //list item divider
-
         DividerItemDecoration divider = new
                 DividerItemDecoration(mRecycleViewPosts.getContext(),
                 DividerItemDecoration.VERTICAL);
@@ -81,29 +75,12 @@ public class PostsActivity extends AppCompatActivity {
         mPostsAdapter.notifyDataSetChanged();
     }
 
-  /*  @NonNull
-    private ArrayList<Post> createDummyData() {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
-        Post post = new Post();
-        post.body = "body1";
-        post.title = "title 1";
-        dummyPosts.add(post);
-        post = new Post();
-
-        post.body = "body2";
-        post.title = "title 2";
-        dummyPosts.add(post);
-        post = new Post();
-
-
-        post.body = "body3";
-        post.title = "title 3";
-        dummyPosts.add(post);
-
-        Log.d(Utility.LOG_TAG, " dummypost count = " + Integer.toString(dummyPosts.size()));
-        return dummyPosts;
-    }*/
-
-
+        // unbind the view to free some memory
+        unbinder.unbind();
+    }
 
 }
