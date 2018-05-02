@@ -12,4 +12,5 @@ public class Utility {
     public static final String USER_ID = "0";
 
 
+    public static final String BASE_IMAGE_URL = "https://api.adorable.io/avatars/";
 }

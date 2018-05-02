@@ -5,8 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nuc.postinfo.R;
 import com.nuc.postinfo.model.Comment;
 import com.nuc.postinfo.model.User;
@@ -31,6 +34,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView mtvmBody;
     private TextView mCommentCount;
     protected int mUserId;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,8 @@ public class DetailActivity extends AppCompatActivity {
         mtvUsername = (TextView) findViewById(R.id.textViewDetailUserName);
         mtvmBody = (TextView) findViewById(R.id.textViewDetailBody);
         mCommentCount = (TextView) findViewById(R.id.textViewDetailCount);
-
+        imageView = (ImageView) findViewById(R.id.imageViewItemDetail);
+      
         queryApi = new QueryApi();
         mDetailPresenter = new DetailPresenter(this, queryApi);
         mDetailPresenter.loadComments();
@@ -105,9 +110,25 @@ public class DetailActivity extends AppCompatActivity {
 
             User currentUser = (u1.get(0));
             Log.d(Utility.LOG_TAG, " displayUSERNAME SIZE=  " + users.size() + "  currentUser.getUserName()  : USERNAME = " + currentUser.getusername());
-            mtvUsername.setText("By Username = " + currentUser.username + " , email = " + currentUser.email + " . name = " + currentUser.name );
-            Log.d(Utility.LOG_TAG, "\n\n\t Username = " + currentUser.username + " \t email = " + currentUser.email + " name = " + currentUser.name + "  id = " + currentUser.id);
+            String email = currentUser.email;
+            mtvUsername.setText("By Username : " + currentUser.username + " , email : " + email + " . name : " + currentUser.name );
+            Log.d(Utility.LOG_TAG, "\n\n\t Username = " + currentUser.username + " \t email = " + email + " name = " + currentUser.name + "  id = " + currentUser.id);
+            if(email !=null)
+                loadImage(email);
         }
+
+    }
+
+    public void loadImage(String emailId)
+    {
+    if(imageView!=null)
+         Glide
+                .with(this)
+                .load(Utility.BASE_IMAGE_URL+emailId)
+                 .thumbnail(0.5f)
+                 .crossFade()
+                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView);
     }
 }
 

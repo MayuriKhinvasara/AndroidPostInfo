@@ -6,17 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.bumptech.glide.Glide;
 import com.nuc.postinfo.R;
 import com.nuc.postinfo.adapter.PostsAdapter;
 import com.nuc.postinfo.adapter.RVEmptyObserver;
 import com.nuc.postinfo.model.Post;
 import com.nuc.postinfo.presenter.ListPresenter;
 import com.nuc.postinfo.services.QueryApi;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PostsActivity extends AppCompatActivity {
 
@@ -28,6 +30,7 @@ public class PostsActivity extends AppCompatActivity {
     QueryApi mQueryApi;
     ArrayList<Post> dummyPosts = new ArrayList<Post>();
     private TextView emptyView;
+    private ImageView imageView;
 
 
     @Override
@@ -36,6 +39,8 @@ public class PostsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_posts_list);
 
         initializeRecyclerView();
+
+
 
         mQueryApi = new QueryApi();
         mListPresenter = new ListPresenter(PostsActivity.this, mQueryApi);
@@ -53,6 +58,9 @@ public class PostsActivity extends AppCompatActivity {
         mPostsAdapter = new PostsAdapter(dummyPosts);
 
         mRecycleViewPosts.setAdapter(mPostsAdapter);
+
+
+
 
         //set emptyview
         mPostsAdapter.registerAdapterDataObserver(new RVEmptyObserver(mRecycleViewPosts, emptyView));
